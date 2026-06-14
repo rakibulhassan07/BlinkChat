@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 220" role="img" aria-labelledby="title desc">
+  <title id="title">BlinkChat connection map</title>
+  <desc id="desc">A stylized network of chat nodes and message paths.</desc>
+  <rect width="520" height="220" rx="12" fill="#141a1f"/>
+  <path d="M0 164C68 116 120 125 174 148C231 172 280 172 332 138C387 101 445 92 520 126V220H0Z" fill="#23323a"/>
+  <path d="M78 82L166 116L260 66L354 116L443 78" fill="none" stroke="#31d0aa" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M166 116L206 166L296 158L354 116" fill="none" stroke="#e9ba4f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M78 82L206 166M260 66L296 158M443 78L354 116" fill="none" stroke="#ff6f61" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+  <g fill="#101316" stroke-width="5">
+    <circle cx="78" cy="82" r="24" stroke="#31d0aa"/>
+    <circle cx="166" cy="116" r="18" stroke="#e9ba4f"/>
+    <circle cx="260" cy="66" r="28" stroke="#ff6f61"/>
+    <circle cx="354" cy="116" r="20" stroke="#65c2ba"/>
+    <circle cx="443" cy="78" r="24" stroke="#8cb6ff"/>
+    <circle cx="206" cy="166" r="18" stroke="#74d99f"/>
+    <circle cx="296" cy="158" r="18" stroke="#f0b44d"/>
+  </g>
+  <g fill="#f5f2e8" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" text-anchor="middle">
+    <text x="78" y="88">BC</text>
+    <text x="166" y="121">API</text>
+    <text x="260" y="72">JWT</text>
+    <text x="354" y="121">WS</text>
+    <text x="443" y="84">DB</text>
+    <text x="206" y="171">DM</text>
+    <text x="296" y="163">S3</text>
+  </g>
+</svg>
