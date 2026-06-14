@@ -2,11 +2,11 @@
 
 A modern real-time community chat platform built with React, Spring Boot, WebSocket, and MySQL.
 
-BlinkChat lets users sign in with Firebase email authentication, create and join communities, exchange real-time group messages, and chat privately through direct messages. The backend uses WebSocket communication for instant delivery while keeping message history in a relational database.
+BlinkChat lets users sign in with Firebase email/password or Google authentication, create and join communities, exchange real-time group messages, and chat privately through direct messages. The backend uses WebSocket communication for instant delivery while keeping message history in a relational database.
 
 ## Core Features
 
-- Firebase email/password login
+- Firebase email/password and Google login
 - Firebase ID token authentication
 - Public group chat
 - Private invite-only groups
@@ -15,7 +15,6 @@ BlinkChat lets users sign in with Firebase email authentication, create and join
 - Typing indicators
 - Message reactions
 - Message edit and delete
-- File sharing
 - Notifications
 - Role-based group access
 - Message search
@@ -80,7 +79,7 @@ MySQL Database     WebSocket Server
 ```text
 Click Login
      |
-Enter Email and Password
+Choose Google or Enter Email and Password
      |
 Firebase Auth Success
      |
@@ -182,7 +181,7 @@ src
 
 ## Frontend Application
 
-The frontend application is built with React, Vite, Redux Toolkit, React Router, Material UI, Axios, Firebase Authentication, SockJS, and STOMP. It starts with a Firebase email login-only screen, then reveals communities, direct messages, presence, reactions, pinned messages, shared files, and theme switching after sign-in.
+The frontend application is built with React, Vite, Redux Toolkit, React Router, Material UI, Axios, Firebase Authentication, SockJS, and STOMP. It starts with a Firebase login-only screen for Google or email/password, then reveals communities, direct messages, presence, reactions, pinned messages, members, and theme switching after sign-in.
 
 The React source follows the suggested structure under `frontend/src`.
 
@@ -220,4 +219,4 @@ npm install
 npm run dev
 ```
 
-Create `frontend/.env.local` from `frontend/.env.example` and set the Firebase project values before running the app.
+Create `frontend/.env.local` from `frontend/.env.example` and set the Firebase project values before running the app. In Firebase Console, enable both **Email/Password** and **Google** under Authentication > Sign-in method.

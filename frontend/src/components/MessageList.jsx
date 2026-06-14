@@ -29,18 +29,7 @@ function MessageList({ messages, onReaction, pinned, typingMember }) {
                   <span>{message.role}</span>
                   <time>{message.time}</time>
                 </div>
-                <div className="bubble">
-                  {message.text}
-                  {message.attachment && (
-                    <div className="attachment">
-                      <span className="attachment-icon">{message.attachment.type}</span>
-                      <span className="file-info">
-                        <strong>{message.attachment.name}</strong>
-                        <span>{message.attachment.meta}</span>
-                      </span>
-                    </div>
-                  )}
-                </div>
+                <div className="bubble">{message.text}</div>
                 {message.reactions?.length > 0 && (
                   <div className="reactions">
                     {message.reactions.map((reaction, index) => (

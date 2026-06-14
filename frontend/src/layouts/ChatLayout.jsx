@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ChatHeader from "../components/ChatHeader";
 import Composer from "../components/Composer";
-import DetailPanel from "../components/DetailPanel";
+import CreateCommunityModal from "../components/CreateCommunityModal";
 import LoginScreen from "../components/LoginScreen";
 import MessageList from "../components/MessageList";
 import RailNav from "../components/RailNav";
@@ -13,6 +13,7 @@ import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 function ChatLayout() {
   const chat = useBlinkChat();
   const auth = useFirebaseAuth();
+  const [creatingCommunity, setCreatingCommunity] = useState(false);
 
   useEffect(() => {
     document.body.dataset.theme = chat.theme;
@@ -26,6 +27,7 @@ function ChatLayout() {
         mode="loading"
         onClearError={auth.actions.clearError}
         onCreateAccount={auth.actions.createAccount}
+        onGoogleSignIn={auth.actions.signInGoogle}
         onSignIn={auth.actions.signIn}
         onThemeChange={chat.actions.setTheme}
         theme={chat.theme}
@@ -40,6 +42,7 @@ function ChatLayout() {
         loading={auth.loading}
         onClearError={auth.actions.clearError}
         onCreateAccount={auth.actions.createAccount}
+        onGoogleSignIn={auth.actions.signInGoogle}
         onSignIn={auth.actions.signIn}
         onThemeChange={chat.actions.setTheme}
         theme={chat.theme}
@@ -49,11 +52,20 @@ function ChatLayout() {
 
   return (
     <div className="app-shell">
-      <RailNav />
+      <RailNav
+        canManageMembers={chat.canManageMembers}
+        currentUserId={chat.currentUser.id}
+        members={chat.activeRoom.members}
+        onLogout={auth.actions.signOut}
+        onRemoveMember={chat.actions.removeCommunityMember}
+        roomId={chat.activeRoom.id}
+        user={auth.user}
+      />
       <WorkspaceSidebar
         activeRoomId={chat.activeRoomId}
         communities={chat.visibleCommunities}
         directs={chat.visibleDirects}
+        onCreateCommunity={() => setCreatingCommunity(true)}
         onSearch={chat.actions.setSearch}
         onSelectRoom={chat.actions.selectRoom}
         search={chat.search}
@@ -72,17 +84,17 @@ function ChatLayout() {
           typingMember={chat.typingMember}
         />
         <Composer
-          attachedFile={chat.attachedFile}
-          onAttach={chat.actions.attachMockFile}
           onSend={chat.actions.addMessage}
         />
       </main>
-      <DetailPanel
-        files={chat.activeRoom.files}
-        members={chat.activeRoom.members}
-        onAuthToggle={auth.actions.signOut}
-        signedIn={auth.signedIn}
-      />
+      {creatingCommunity && (
+        <CreateCommunityModal
+          currentUser={chat.currentUser}
+          onClose={() => setCreatingCommunity(false)}
+          onCreate={chat.actions.createCommunity}
+          users={chat.availableUsers}
+        />
+      )}
     </div>
   );
 }

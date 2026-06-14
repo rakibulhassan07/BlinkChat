@@ -8,6 +8,16 @@ export const currentUser = {
   colors: ["#31d0aa", "#e9ba4f"],
 };
 
+export const availableUsers = [
+  currentUser,
+  { id: "user-sakib", name: "Sakib Ahmed", role: "Member", status: "away", initials: "SA", colors: ["#67a8ff", "#74d99f"] },
+  { id: "user-rahim", name: "Rahim Uddin", role: "Member", status: "online", initials: "RU", colors: ["#ff6f61", "#e9ba4f"] },
+  { id: "user-hasan", name: "Hasan Mahmud", role: "Member", status: "busy", initials: "HM", colors: ["#8cb6ff", "#65c2ba"] },
+  { id: "user-mira", name: "Mira Chowdhury", role: "Member", status: "online", initials: "MC", colors: ["#ff6f61", "#f0b44d"] },
+  { id: "user-nafis", name: "Nafis Karim", role: "Member", status: "offline", initials: "NK", colors: ["#65c2ba", "#8cb6ff"] },
+  { id: "user-tanjim", name: "Tanjim Islam", role: "Member", status: "online", initials: "TI", colors: ["#f0b44d", "#ff7a5c"] },
+];
+
 export const initialRooms = [
   {
     id: "java-devs",
@@ -40,7 +50,7 @@ export const initialRooms = [
         status: "online",
         colors: ["#31d0aa", "#e9ba4f"],
         time: "09:32",
-        text: "I pushed the database design for users, groups, messages, reactions, and group members. The next piece is Firebase email authentication.",
+        text: "I pushed the database design for users, groups, messages, reactions, and group members. The next piece is Firebase email and Google authentication.",
         reactions: [
           { label: "Like", count: 4, active: false },
           { label: "Ship", count: 2, active: false },
@@ -66,7 +76,6 @@ export const initialRooms = [
         colors: ["#ff6f61", "#e9ba4f"],
         time: "09:44",
         text: "I added a STOMP event map so the frontend can handle message.created, message.updated, typing.started, and presence.changed cleanly.",
-        attachment: { id: "file-events", name: "websocket-events.md", type: "MD", meta: "18 KB" },
         reactions: [
           { label: "Nice", count: 3, active: false },
           { label: "Hot", count: 1, active: false },

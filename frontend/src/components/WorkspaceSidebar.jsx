@@ -7,6 +7,7 @@ function WorkspaceSidebar({
   activeRoomId,
   communities,
   directs,
+  onCreateCommunity,
   onSearch,
   onSelectRoom,
   search,
@@ -18,7 +19,7 @@ function WorkspaceSidebar({
           <p className="eyebrow">Workspace</p>
           <h1>BlinkChat</h1>
         </div>
-        <ToolButton className="compact" label="New community">
+        <ToolButton className="compact" label="New community" onClick={onCreateCommunity}>
           <AddRoundedIcon />
         </ToolButton>
       </header>

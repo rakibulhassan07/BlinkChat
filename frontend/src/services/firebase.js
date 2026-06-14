@@ -2,9 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import {
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  browserLocalPersistence,
+  setPersistence,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -21,22 +26,55 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAuth = getAuth(firebaseApp);
+export const authPersistencePromise = setPersistence(firebaseAuth, browserLocalPersistence);
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: "select_account",
+});
 
 export const analyticsPromise = isSupported().then((supported) =>
   supported ? getAnalytics(firebaseApp) : null
 );
 
 export function subscribeToAuthState(callback) {
-  return onAuthStateChanged(firebaseAuth, callback);
+  let unsubscribe = () => {};
+  let active = true;
+
+  authPersistencePromise.then(() => {
+    if (!active) return;
+    unsubscribe = onAuthStateChanged(firebaseAuth, callback);
+  });
+
+  return () => {
+    active = false;
+    unsubscribe();
+  };
 }
 
 export async function signInWithEmail({ email, password }) {
+  await authPersistencePromise;
   const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
   return result.user;
 }
 
+export async function signInWithGoogle() {
+  await authPersistencePromise;
+  const result = await signInWithPopup(firebaseAuth, googleProvider);
+  return result.user;
+}
+
 export async function createAccountWithEmail({ displayName, email, password }) {
-  const result = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+  await authPersistencePromise;
+  const normalizedEmail = email.trim().toLowerCase();
+  const existingMethods = await fetchSignInMethodsForEmail(firebaseAuth, normalizedEmail);
+
+  if (existingMethods.length > 0) {
+    const error = new Error("This email is already registered. Please login instead.");
+    error.code = "auth/email-already-registered";
+    throw error;
+  }
+
+  const result = await createUserWithEmailAndPassword(firebaseAuth, normalizedEmail, password);
 
   if (displayName) {
     await updateProfile(result.user, { displayName });
@@ -46,5 +84,5 @@ export async function createAccountWithEmail({ displayName, email, password }) {
 }
 
 export function signOutOfFirebase() {
-  return signOut(firebaseAuth);
+  return authPersistencePromise.then(() => signOut(firebaseAuth));
 }

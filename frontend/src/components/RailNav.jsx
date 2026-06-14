@@ -1,10 +1,11 @@
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import LogoMembersMenu from "./LogoMembersMenu";
+import ProfileMenu from "./ProfileMenu";
 import ToolButton from "./ToolButton";
 
-function RailNav() {
+function RailNav({ canManageMembers, currentUserId, members, onLogout, onRemoveMember, roomId, user }) {
   return (
     <aside aria-label="Primary navigation" className="rail">
       <a aria-label="BlinkChat home" className="brand-mark" href="#app">
@@ -16,17 +17,19 @@ function RailNav() {
         <ToolButton active label="Chats">
           <ChatBubbleOutlineRoundedIcon />
         </ToolButton>
-        <ToolButton label="Communities">
-          <GroupsRoundedIcon />
-        </ToolButton>
+        <LogoMembersMenu
+          canManageMembers={canManageMembers}
+          currentUserId={currentUserId}
+          members={members}
+          onRemoveMember={onRemoveMember}
+          roomId={roomId}
+        />
         <ToolButton label="Files">
           <FolderRoundedIcon />
         </ToolButton>
       </nav>
 
-      <ToolButton className="rail-bottom" label="Settings">
-        <SettingsRoundedIcon />
-      </ToolButton>
+      <ProfileMenu onLogout={onLogout} user={user} />
     </aside>
   );
 }

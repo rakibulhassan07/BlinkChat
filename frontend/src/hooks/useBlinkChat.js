@@ -2,13 +2,14 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addMessage,
-  attachMockFile,
+  createCommunity,
+  removeCommunityMember,
   selectRoom,
   setSearch,
   setTheme,
   toggleReaction,
 } from "../store/chatSlice";
-import { currentUser } from "../data/mockData";
+import { availableUsers, currentUser } from "../data/mockData";
 import { filterMessages, getTypingMember, roomMatches } from "../utils/chatUtils";
 
 export function useBlinkChat() {
@@ -40,17 +41,29 @@ export function useBlinkChat() {
     [activeRoom]
   );
 
+  const canManageMembers = useMemo(
+    () =>
+      activeRoom.category === "community" &&
+      activeRoom.members.some(
+        (member) => member.id === currentUser.id && ["Admin", "Owner"].includes(member.role)
+      ),
+    [activeRoom]
+  );
+
   return {
     ...chat,
     activeRoom,
     currentUser,
+    canManageMembers,
+    availableUsers,
     typingMember,
     visibleCommunities,
     visibleDirects,
     visibleMessages,
     actions: {
       addMessage: (text) => dispatch(addMessage(text)),
-      attachMockFile: () => dispatch(attachMockFile()),
+      createCommunity: (payload) => dispatch(createCommunity({ ...payload, availableUsers })),
+      removeCommunityMember: (payload) => dispatch(removeCommunityMember(payload)),
       selectRoom: (roomId) => dispatch(selectRoom(roomId)),
       setSearch: (value) => dispatch(setSearch(value)),
       setTheme: (theme) => dispatch(setTheme(theme)),

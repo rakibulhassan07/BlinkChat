@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AlternateEmailRoundedIcon from "@mui/icons-material/AlternateEmailRounded";
+import GoogleIcon from "@mui/icons-material/Google";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import SecurityRoundedIcon from "@mui/icons-material/SecurityRounded";
@@ -11,6 +12,7 @@ function LoginScreen({
   mode = "auth",
   onClearError,
   onCreateAccount,
+  onGoogleSignIn,
   onSignIn,
   onThemeChange,
   theme,
@@ -24,6 +26,7 @@ function LoginScreen({
 
   function toggleAuthMode() {
     onClearError?.();
+    setPassword("");
     setAuthMode(isCreateMode ? "login" : "create");
   }
 
@@ -42,6 +45,28 @@ function LoginScreen({
     }
 
     onSignIn(payload);
+  }
+
+  if (mode === "loading") {
+    return (
+      <main className="login-screen auth-loading-screen" aria-label="Restoring BlinkChat session">
+        <section className="auth-loading-card">
+          <span className="brand-mark login-mark">
+            <span className="brand-pulse" />
+            <span>B</span>
+          </span>
+          <div className="login-card-mark auth-loading-mark">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="login-copy">
+            <h2>Opening BlinkChat</h2>
+            <p>Restoring your secure Firebase session...</p>
+          </div>
+        </section>
+      </main>
+    );
   }
 
   return (
@@ -117,7 +142,18 @@ function LoginScreen({
           </div>
           <div className="login-copy">
             <h2>{isCreateMode ? "Create your account" : "Login to your account"}</h2>
-            <p>{isCreateMode ? "Create a BlinkChat account with email" : "Login with your email to continue"}</p>
+            <p>{isCreateMode ? "Create a BlinkChat account with email or Google" : "Login with Google or email to continue"}</p>
+          </div>
+
+          <button className="google-login-button" disabled={isLoading} onClick={onGoogleSignIn} type="button">
+            <GoogleIcon />
+            Continue with Google
+          </button>
+
+          <div className="login-divider">
+            <span />
+            <em>or</em>
+            <span />
           </div>
 
           <form className="email-auth-form" onSubmit={handleSubmit}>

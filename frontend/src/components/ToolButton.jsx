@@ -9,7 +9,6 @@ function ToolButton({
   type = "button",
   ...props
 }) {
-  const wrapperClassName = className.includes("rail-bottom") ? "rail-bottom" : undefined;
   const button = (
     <button
       aria-label={label}
@@ -25,7 +24,7 @@ function ToolButton({
 
   return (
     <Tooltip arrow title={label}>
-      <span className={wrapperClassName}>{button}</span>
+      <span>{button}</span>
     </Tooltip>
   );
 }
